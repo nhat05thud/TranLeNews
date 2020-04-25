@@ -1,0 +1,27 @@
+﻿@inherits Umbraco.Web.Mvc.UmbracoTemplatePage
+@{
+    Layout = "Master.cshtml";
+}
+
+@Html.Partial("Layout/_BreadCrumb")
+<section class="product">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-9 details-product">
+                <h1 class="title-head" itemprop="name">@Model.Content.Name</h1>
+                <div class="row">
+                    <div class="col-xs-12 col-lg-12 margin-top-15 margin-bottom-10">
+                        <div class="product-tab e-tabs">
+                            <div class="wrap-content">
+                                @Model.Content.GetPropertyValue("content")
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <aside class="col-md-3">
+                aside
+            </aside>
+        </div>
+    </div>
+</section>

@@ -1,0 +1,17 @@
+﻿@inherits Umbraco.Web.Mvc.UmbracoTemplatePage
+@{
+    Layout = "Master.cshtml";
+    // get more images
+    var moreImages = Model.Content.GetPropertyValue<IEnumerable<IPublishedContent>>("moreImages");
+}
+
+@Html.Partial("Layout/_BreadCrumb")
+
+@*bind more images*@
+@if (moreImages != null && moreImages.Any())
+{
+    foreach(var image in moreImages)
+    {
+        <img src="@image.Url" />
+    }
+}

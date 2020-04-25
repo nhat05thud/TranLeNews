@@ -1,0 +1,43 @@
+﻿@inherits Umbraco.Web.Mvc.UmbracoTemplatePage
+@{
+    var home = CurrentPage.AncestorOrSelf(1);
+    var logo = home.GetPropertyValue<IPublishedContent>("logo");
+}
+@*bind logo*@
+<a href="@home.Url">
+    <img src="@(logo != null ? logo.Url : "https://via.placeholder.com/96x50")" alt="logo ">
+</a>
+
+@*bind admin*@
+<ul>
+    <li class="nav-item @(Model.Content.Id == home.Id ? "active" : "")"><a class="nav-link" href="@home.Url">@home.Name</a></li>
+    @foreach (var item in home.Children)
+    {
+        <li class="nav-item @(item.IsAncestorOrSelf(CurrentPage) ? "active" : null)">
+            <a class="nav-link" href="@item.Url">@item.Name</a>
+            @if (item.DocumentTypeAlias == "service")
+            {
+                <ul class="dropdown-menu">
+                    @foreach (var child in item.Children)
+                    {
+                        <li class="dropdown-submenu nav-item-lv2">
+                            <a class="nav-link" href="@child.Url">@child.Name</a>
+                        </li>
+                    }
+                </ul>
+            }
+        </li>
+    }
+</ul>
+
+@*search form*@
+<div class="header_search search_form">
+    <form class="input-group search-bar search_form" action="/Search" method="get" role="search">
+        <input type="search" name="query" value="" placeholder="Tìm kiếm mẫu... " class="input-group-field st-default-search-input search-text" autocomplete="off">
+        <span class="input-group-btn">
+            <button type="submit" class="btn icon-fallback-text">
+                <i class="fa fa-search"></i>
+            </button>
+        </span>
+    </form>
+</div>

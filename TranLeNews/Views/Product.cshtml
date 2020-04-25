@@ -1,0 +1,72 @@
+﻿@using Umbraco.Web.Models
+@inherits Umbraco.Web.Mvc.UmbracoTemplatePage
+@{
+    Layout = "Master.cshtml";
+    var allItems = Model.Content.Descendants("productItem").OrderByDescending(x => x.SortOrder);
+    var pageSize = 16;
+
+    var page = 1; int.TryParse(Request.QueryString["page"], out page);
+    var totalPages = (int)Math.Ceiling((double)allItems.Count() / (double)pageSize);
+
+    if (page > totalPages)
+    {
+        page = totalPages;
+    }
+    else if (page < 1)
+    {
+        page = 1;
+    }
+}
+
+@Html.Partial("Layout/_BreadCrumb")
+<div class="container">
+    <div class="row">
+        <section class="main_container collection col-md-9">
+            <h1 class="hidden title-head margin-top-0">@Model.Content.Name</h1>
+            <div class="category-products products">
+                <section class="products-view products-view-grid">
+                    <div class="row">
+                        @foreach (var item in allItems.Skip((page - 1) * pageSize).Take(pageSize))
+                        {
+                            var listImages = item.GetPropertyValue<IEnumerable<IPublishedContent>>("images");
+                            <div class="col-xs-6 col-sm-6 col-md-4 col-lg-4">
+                                <div class="product-box">
+                                    <div class="product-thumbnail">
+                                        <a href="@item.Url">
+                                            <img src="@(listImages != null && listImages.Any() ? listImages.First().GetCropUrl(240, 192, imageCropMode: ImageCropMode.BoxPad, furtherOptions: "&bgcolor=fff&slimmage=true") : "https://via.placeholder.com/240x192")" alt="@item.Name">
+                                            <span class="img-size"><i class="fa fa-image"></i></span>
+                                        </a>
+                                    </div>
+                                    <div class="product-info">
+                                        <h3 class="product-name"><a href="@item.Url" title="@item.Name">@item.Name</a></h3>
+                                        <div class="post-time">@item.CreateDate.ToString("dd/MM/yyyy")</div>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                    @if (totalPages > 1)
+                    {
+                        <div class="pager text-center">
+                            @if (page > 1)
+                            {
+                                <a class="prev" href="?page=@(page-1)"><i class="fa fa-caret-left"></i></a>
+                            }
+                            @for (int p = 1; p < totalPages + 1; p++)
+                            {
+                                <a class="@(p == page ? "current" : string.Empty)" href="?page=@p">@p</a>
+                            }
+                            @if (page < totalPages)
+                            {
+                                <a class="next" href="?page=@(page+1)"><i class="fa fa-caret-right"></i></a>
+                            }
+                        </div>
+                    }
+                </section>
+            </div>
+        </section>
+        <aside class="sidebar right left-content col-md-3 col-lg-3 ">
+            aside
+        </aside>
+    </div>
+</div>

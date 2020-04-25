@@ -1,0 +1,33 @@
+﻿@inherits UmbracoViewPage<TranLeNews.Models.ContactForm>
+@{
+    if (!string.IsNullOrEmpty(Model.ErrorMsg))
+    {
+        <div id="divUpdateMessage">
+            @Model.ErrorMsg
+        </div>
+    }
+}
+@Html.AntiForgeryToken()
+<div class="form-signup clearfix">
+    <div class="form-group">
+        @Html.TextBoxFor(model => model.Name, new { @class = "form-control  form-control-lg", placeholder = "Họ và tên" })
+        @Html.ValidationMessageFor(x => x.Name)
+    </div>
+    <div class="form-group">
+        @Html.TextBoxFor(model => model.Phone, new { @class = "form-control form-control-lg", placeholder = "Điện thoại" })
+        @Html.ValidationMessageFor(x => x.Phone)
+    </div>
+    <div class="form-group">
+        @Html.TextBoxFor(model => model.Email, new { @class = "form-control form-control-lg", placeholder = "Email" })
+        @Html.ValidationMessageFor(x => x.Email)
+    </div>
+    <div class="form-group">
+        @Html.TextAreaFor(model => model.Message, new { @class = "form-control form-control-lg", @rows = "5", placeholder = "Nội dung" })
+        @Html.ValidationMessageFor(x => x.Message)
+    </div>
+    <div class="pull-xs-left a-center" style="margin-top:20px;">
+        <button type="submit" class="btn btn-md btn-style btn-style-active btn-dark">Gửi tin nhắn</button>
+    </div>
+</div>
+@Html.HiddenFor(x => x.CultureLCID)
+<div class="loading_div"></div>

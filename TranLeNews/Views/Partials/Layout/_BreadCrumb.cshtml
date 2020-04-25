@@ -1,0 +1,26 @@
+﻿@inherits Umbraco.Web.Mvc.UmbracoTemplatePage
+@{ 
+    var home = CurrentPage.AncestorOrSelf(1);
+}
+<section class="bread-crumb">
+    <div class="container">
+        <div class="row">
+            <div class="col-xs-12">
+                <ul class="breadcrumb no-background">
+                    <li class="home">
+                        <a href="@home.Url"><span itemprop="title">@home.Name</span></a>
+                        <span><i class="fa fa-angle-right"></i></span>
+                    </li>
+                    @foreach (var ancestor in Model.Content.Ancestors().Where(t => t.IsVisible()).OrderBy("level").Where("level > 1"))
+                    {
+                        <li>
+                            <a href="@ancestor.Url"><span itemprop="title">@ancestor.Name</span></a>
+                            <span><i class="fa fa-angle-right"></i></span>
+                        </li>
+                    }
+                    <li><strong itemprop="title">@Model.Content.Name</strong></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</section>

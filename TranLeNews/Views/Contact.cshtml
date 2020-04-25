@@ -1,0 +1,8 @@
+﻿@using TranLeNews.Models
+@inherits Umbraco.Web.Mvc.UmbracoTemplatePage
+@{
+    Layout = "Master.cshtml";
+}
+@Html.Partial("Layout/_BreadCrumb")
+@Html.Partial("Contact/_Contact", new ContactForm())
+

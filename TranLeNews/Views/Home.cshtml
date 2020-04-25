@@ -1,0 +1,15 @@
+﻿@inherits Umbraco.Web.Mvc.UmbracoTemplatePage
+@{
+	Layout = "Master.cshtml";
+    // get banner
+    var banners = Model.Content.GetPropertyValue<IEnumerable<IPublishedContent>>("banner");
+}
+
+@* bind banner *@
+@if (banners != null && banners.Any())
+{
+    foreach (var image in banners)
+    {
+        <img src="@image.Url" />
+    }
+}

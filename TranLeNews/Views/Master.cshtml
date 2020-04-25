@@ -1,0 +1,17 @@
+﻿@inherits Umbraco.Web.Mvc.UmbracoTemplatePage
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    @Html.Partial("Layout/_Share")
+    <script src="/Scripts/jquery.min.js"></script>
+</head>
+<body>
+    @Html.Partial("Layout/_Header")
+    @RenderBody()
+    @Html.Partial("Layout/_Footer")
+</body>
+</html>

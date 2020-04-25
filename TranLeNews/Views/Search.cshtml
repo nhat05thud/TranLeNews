@@ -1,0 +1,35 @@
+﻿@inherits Umbraco.Web.Mvc.UmbracoTemplatePage
+@{
+    Layout = "Master.cshtml";
+}
+@*bind tìm kiếm*@
+@{
+    var searchQuery = Request.QueryString["query"];
+    if (!string.IsNullOrEmpty(searchQuery))
+    {
+        var results = (IEnumerable<IPublishedContent>)Umbraco.Search(searchQuery);
+        results = results.Where(x => x.Name.ToLower().Contains(searchQuery.ToLower()) || searchQuery.ToLower().Contains(x.Name.ToLower()));
+        <p>Kết quả tìm kiếm cho từ khoá: <strong>@searchQuery</strong></p>
+        <div class="row">
+            @foreach (var item in results)
+            {
+                if (item.DocumentTypeAlias == "newsItem" || item.DocumentTypeAlias == "productItem")
+                {
+                    var thumb = Umbraco.TypedMedia(item.GetPropertyValue<int>("image"));
+                    <div class="col-lg-3 col-md-4 col-sm-6">
+                        <div class="item__grid-10">
+                            <div class="img">
+                                <a href="@item.Url">
+                                    <img src="@(thumb != null ? thumb.GetCropUrl(270, 270, furtherOptions: "&slimmage=true") : "/images/no-image.png?anchor=center&mode=crop&width=270&height=270&slimmage=true&rnd=" + item.UpdateDate.ToString("ddMMyyyhhmmss"))" alt="@item.Name">
+                                </a>
+                            </div>
+                            <div class="content">
+                                <a href="@item.Url">@item.Name</a>
+                            </div>
+                        </div>
+                    </div>
+                }
+            }
+        </div>
+    }
+}
